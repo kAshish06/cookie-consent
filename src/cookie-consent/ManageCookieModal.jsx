@@ -2,7 +2,6 @@ import React from "react";
 import { createPortal } from "react-dom";
 import CookieTypeSelector from "./CookieTypeSelector";
 import setCookies from "../helpers/setCookies";
-import useLocalStorage from "../hooks/useLocalStorage";
 
 const cookie_types = [
   {
@@ -28,7 +27,6 @@ const cookie_types = [
   },
 ];
 export default function ManageCookieModal({ open = false, close = () => {} }) {
-  const [_, updateCookieConsent] = useLocalStorage("cookieConsent");
   const [cookieTypes, setCookieTypes] = React.useState([...cookie_types]);
   if (!open) return null;
   const updateCookieSelectionState = (index) => {
@@ -38,17 +36,14 @@ export default function ManageCookieModal({ open = false, close = () => {} }) {
   };
   const handleDeclineAcceptAllClick = (type) => {
     if (type === "declineAll") {
-      updateCookieConsent(true);
       setCookies(false, false, false);
     }
     if (type === "acceptAll") {
-      updateCookieConsent(true);
       setCookies(true, true, true);
     }
     close();
   };
   const handleSaveClick = () => {
-    updateCookieConsent(true);
     setCookies(...cookieTypes.map((cookieType) => cookieType.selected));
     close();
   };

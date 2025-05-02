@@ -50,10 +50,6 @@
   text-align: left;
   padding: 10px 20px;
 }
-.cookie-banner-header {
-
-}
-.cookie-banner-body {}
 .cookie-banner-footer {
   display: flex;
   justify-content: space-between;
@@ -96,9 +92,6 @@ button {
   font-size: 16px;
   font-weight: 700;
 }
-.cookie-type-description {
-
-}
 
 .toggle {
   position: relative;
@@ -139,4 +132,20 @@ input:checked+.slider {
 
 input:checked+.slider::before {
   transform: translateX(24px);
+}
+
+@media (max-width: 600px) {
+  .cookie-banner-footer {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .cookie-banner-footer  button {
+    width: 100%
+  }
+  .modal-footer .danger-btn {
+    width: 98%;
+  }
+  .modal-footer > div {
+    width: 100%;
+  }
 }

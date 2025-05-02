@@ -4,14 +4,13 @@ import setCookies from "../helpers/setCookies";
 export default function CookieBanner({ openManageCookieModal = () => {} }) {
   const [cookieConsent, updateCookieConsent] = useLocalStorage("cookieConsent");
 
-  if (cookieConsent) return null;
+  if (cookieConsent !== "") return null;
   const handleCookieBtnClick = (btnType) => {
+    updateCookieConsent(true);
     if (btnType === "declineAll") {
-      updateCookieConsent(true);
       setCookies(false, false, false);
     }
     if (btnType === "acceptAll") {
-      updateCookieConsent(true);
       setCookies(true, true, true);
     }
     if (btnType === "manage") {

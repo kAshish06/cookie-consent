@@ -14,8 +14,8 @@ export default function useLocalStorage(key, initialValue = "") {
 
   const updateValue = React.useCallback(
     (newValue) => {
-      localStorage.setItem(key, JSON.stringify(newValue));
       setValue(newValue);
+      localStorage.setItem(key, JSON.stringify(newValue));
     },
     [key]
   );

@@ -1,6 +1,6 @@
-import getCookies from "./helpers/getCookies";
-import addScript from "./helpers/addScript";
-import SCRIPT_MAP from "./cookieScripts";
+import getCookies from "./getCookies";
+import addScript from "./addScript";
+import { SCRIPT_MAP } from "../cookieScripts";
 
 export default function initialiseCookieScripts() {
   let cookieMap = getCookies();
