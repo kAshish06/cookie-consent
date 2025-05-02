@@ -2,8 +2,13 @@ import React from "react";
 
 export default function useLocalStorage(key, initialValue = "") {
   const getStoredValue = () => {
-    let storedValue = localStorage.getItem(key);
-    return storedValue !== null ? JSON.parse(storedValue) : initialValue;
+    try {
+      let storedValue = localStorage.getItem(key);
+      return storedValue !== null ? JSON.parse(storedValue) : initialValue;
+    } catch (e) {
+      console.error("error parsing json", e);
+      return initialValue;
+    }
   };
   const [value, setValue] = React.useState(getStoredValue);
 

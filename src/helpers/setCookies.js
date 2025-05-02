@@ -1,6 +1,7 @@
 const COOKIE_MAX_AGE = 365 * 24 * 60 * 60;
 export default function setCookies(essential, marketing, analytics) {
-  document.cookie = `essential=${essential}; max-age=${COOKIE_MAX_AGE}; path=/`;
-  document.cookie = `marketing=${marketing}; max-age=${COOKIE_MAX_AGE}; path=/`;
-  document.cookie = `analytics=${analytics}; max-age=${COOKIE_MAX_AGE}; path=/`;
+  let cookies = { essential, marketing, analytics };
+  for (let key in cookies) {
+    document.cookie = `${key}=${cookies[key]}; max-age=${COOKIE_MAX_AGE}; path=/`;
+  }
 }

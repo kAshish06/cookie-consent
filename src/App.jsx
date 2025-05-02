@@ -3,24 +3,14 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import CookieBanner from "./cookie-consent/CookieBanner";
 import ManageCookieModal from "./cookie-consent/ManageCookieModal";
-import getCookies from "./helpers/getCookies";
-import addScript from "./helpers/addScript";
+import initialiseCookieScripts from "./helpers/initialiseCookieScripts";
 import "./App.css";
-const SCRIPT_MAP = {
-  essential: "/js/essentials.js",
-  marketing: "/js/marketing.js",
-  analytics: "/js/analytics.js",
-};
+
 function App() {
   const [showManageCookieModal, setShowManageCookieModal] =
     React.useState(false);
   React.useEffect(() => {
-    let cookieMap = getCookies();
-    for (let cookie in cookieMap) {
-      if (cookieMap[cookie]) {
-        SCRIPT_MAP[cookie] && addScript(cookie, SCRIPT_MAP[cookie]);
-      }
-    }
+    initialiseCookieScripts();
   }, []);
   return (
     <>
