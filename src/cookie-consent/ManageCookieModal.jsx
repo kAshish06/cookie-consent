@@ -1,9 +1,11 @@
 import React from "react";
-import { createPortal } from "react-dom";
 import CookieTypeSelector from "./CookieTypeSelector";
 import setCookies from "../helpers/setCookies";
+import Modal from "../components/Modal";
+import Button from "../components/Button";
+import { COOKIE_ACTIONS } from "../constants";
 
-const cookie_types = [
+const getInitialCookieTypes = () => [
   {
     type: "Essentials",
     description:
@@ -26,65 +28,77 @@ const cookie_types = [
     selected: false,
   },
 ];
-export default function ManageCookieModal({ open = false, close = () => {} }) {
-  const [cookieTypes, setCookieTypes] = React.useState([...cookie_types]);
-  if (!open) return null;
+export default function ManageCookieModal({
+  open = false,
+  closeManageCookieModal = () => {},
+}) {
+  const [cookieTypes, setCookieTypes] = React.useState(getInitialCookieTypes());
   const updateCookieSelectionState = (index) => {
-    let newCookieTypes = [...cookieTypes];
-    newCookieTypes[index].selected = !newCookieTypes[index].selected;
-    setCookieTypes(newCookieTypes);
+    setCookieTypes((prevCookies) => {
+      return prevCookies.map((cookie, i) =>
+        i === index ? { ...cookie, selected: !cookie.selected } : cookie
+      );
+    });
   };
   const handleDeclineAcceptAllClick = (type) => {
-    if (type === "declineAll") {
+    if (type === COOKIE_ACTIONS.DECLINE_ALL) {
       setCookies(false, false, false);
     }
-    if (type === "acceptAll") {
+    if (type === COOKIE_ACTIONS.ACCEPT_ALL) {
       setCookies(true, true, true);
     }
-    close();
+    closeManageCookieModal();
   };
   const handleSaveClick = () => {
     setCookies(...cookieTypes.map((cookieType) => cookieType.selected));
-    close();
+    closeManageCookieModal();
   };
-  const portalRoot = document.getElementById("modal");
-  const modal = (
-    <div className="modal-container">
-      <div className="modal-body">
-        {cookieTypes.map((cookieType, index) => {
-          return (
-            <CookieTypeSelector
-              key={cookieType.type}
-              cookieType={cookieType}
-              updateCookieSelectionState={() =>
-                updateCookieSelectionState(index)
+  return (
+    <Modal
+      open={open}
+      body={cookieTypes.map((cookieType, index) => {
+        return (
+          <CookieTypeSelector
+            key={cookieType.type}
+            cookieType={cookieType}
+            updateCookieSelectionState={() => updateCookieSelectionState(index)}
+          />
+        );
+      })}
+      footer={
+        <div className="manage-cookies-modal-footer">
+          <div>
+            <Button
+              variant="primary"
+              className="primary-btn"
+              onClick={() =>
+                handleDeclineAcceptAllClick(COOKIE_ACTIONS.ACCEPT_ALL)
               }
-            />
-          );
-        })}
-      </div>
-      <div className="modal-footer">
-        <div>
-          <button
-            className="primary-btn"
-            onClick={() => handleDeclineAcceptAllClick("acceptAll")}
-          >
-            Accept All
-          </button>
-          <button className="secondary-btn" onClick={() => handleSaveClick()}>
-            Save
-          </button>
+            >
+              Accept All
+            </Button>
+            <Button
+              variant="secondary"
+              className="secondary-btn"
+              onClick={() => handleSaveClick()}
+            >
+              Save
+            </Button>
+          </div>
+          <div>
+            <Button
+              variant="danger"
+              className="danger-btn"
+              onClick={() =>
+                handleDeclineAcceptAllClick(COOKIE_ACTIONS.DECLINE_ALL)
+              }
+            >
+              Decline All
+            </Button>
+          </div>
         </div>
-        <div>
-          <button
-            className="danger-btn"
-            onClick={() => handleDeclineAcceptAllClick("declineAll")}
-          >
-            Decline All
-          </button>
-        </div>
-      </div>
-    </div>
+      }
+      onClose={closeManageCookieModal}
+    />
   );
-  return createPortal(modal, portalRoot);
 }

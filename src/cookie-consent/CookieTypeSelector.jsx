@@ -9,9 +9,11 @@ export default function CookieTypeSelector({
       <div className="cookie-type-header-container">
         <span className="cookie-type-name">{type}</span>
         <Toggle
+          id={`toggle-${type}`}
           checked={selected}
           disabled={disabled}
           onChange={(event) => updateCookieSelectionState(event)}
+          data-testid={`cookie-toggle-${type.toLowerCase()}`}
         />
       </div>
       <div>{description}</div>
