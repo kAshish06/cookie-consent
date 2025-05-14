@@ -1,3 +1,7 @@
+# Deployment
+
+App is deployed using vercel and can be accessed by navigating to the link https://cookie-consent-ashishs-projects-42f03672.vercel.app/
+
 # Cookie Consent Component
 
 This is an app that displays a **Cookie Consent Component** built with **React** and **Tailwind CSS** that allows users to give consent for cookies and manage script insertion based on their preferences.
